@@ -44,11 +44,6 @@
           <span>{{ scope.row.createTime| getUTCTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Remark">
-        <template slot-scope="scope">
-          {{ scope.row.remark }}
-        </template>
-      </el-table-column>
       <el-table-column
         label="Operation"
       >
@@ -73,16 +68,13 @@
 <script>
 
 import { getProposalList } from '@/api/proposal'
-// import {  } from '@/utils/index.js'
 import { getUTCTime } from '@/utils'
 export default {
   filters: {
     statusFilter(status) {
-      const statusMap = {
-        draft: 'gray',
-        published: 'success',
-        deleted: 'danger'
-      }
+      const statusMap = [
+        'gray', 'success', 'danger'
+      ]
       return statusMap[status]
     },
     stateWord(status) {
