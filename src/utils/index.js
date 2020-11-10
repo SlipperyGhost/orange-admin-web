@@ -1,6 +1,10 @@
 /**
- * Created by PanJiaChen on 16/11/18.
+ * Created by EricYang on 10/11/20.
  */
+const CryptoJS = require('crypto-js') //
+
+const key = CryptoJS.enc.Utf8.parse('3019519629981742') //
+const iv = CryptoJS.enc.Utf8.parse('2359394434655161') //
 
 /**
  * Parse the time to string
@@ -114,4 +118,104 @@ export function param2Obj(url) {
     }
   })
   return obj
+}
+
+/**
+ * @param word
+ * @returns {string}
+ * @constructor
+ */
+export function Decrypt(word) {
+  const encryptedHexStr = CryptoJS.enc.Hex.parse(word)
+  const srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr)
+  const decrypt = CryptoJS.AES.decrypt(srcs, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  })
+  const decryptedStr = decrypt.toString(CryptoJS.enc.Utf8)
+  return decryptedStr.toString()
+}
+
+/**
+ * @param word
+ * @returns {string}
+ * @constructor
+ */
+export function Encrypt(word) {
+  const srcs = CryptoJS.enc.Utf8.parse(word)
+  const encrypted = CryptoJS.AES.encrypt(srcs, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  })
+  return encrypted.ciphertext.toString().toUpperCase()
+}
+
+export function getUTCTime(inputTime) {
+  const date = new Date(inputTime)
+  const Y = date.getUTCFullYear()
+  const M =
+    date.getUTCMonth() + 1 < 10
+      ? '0' + (date.getUTCMonth() + 1)
+      : date.getUTCMonth() + 1
+  let mouth = ''
+
+  switch (M.toString()) {
+    case '01':
+      mouth = 'Jan-'
+      break
+    case '02':
+      mouth = 'Feb-'
+      break
+    case '03':
+      mouth = 'Mar-'
+      break
+    case '04':
+      mouth = 'Apr-'
+      break
+    case '05':
+      mouth = 'May-'
+      break
+    case '06':
+      mouth = 'Jun-'
+      break
+    case '07':
+      mouth = 'Jul-'
+      break
+    case '08':
+      mouth = 'Aug-'
+      break
+    case '09':
+      mouth = 'Sep-'
+      break
+    case '10':
+      mouth = 'Oct-'
+      break
+    case '11':
+      mouth = 'Nov-'
+      break
+    case '12':
+      mouth = 'Dec-'
+      break
+    default:
+      break
+  }
+
+  const D =
+    date.getUTCDate() < 10
+      ? '0' + date.getUTCDate() + '-'
+      : date.getUTCDate() + '-'
+  const h =
+    date.getUTCHours() < 10 ? '0' + date.getUTCHours() : date.getUTCHours()
+  const m =
+    date.getUTCMinutes() < 10
+      ? '0' + date.getUTCMinutes()
+      : date.getUTCMinutes()
+  const s =
+    date.getUTCSeconds() < 10
+      ? '0' + date.getUTCSeconds()
+      : date.getUTCSeconds()
+
+  return mouth + D + Y + ' ' + h + ':' + m + ':' + s + ' UTC'
 }

@@ -1,20 +1,21 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken,setToken } from '@/utils/auth'
+import { getToken, setToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  timeout: 5000, // request timeout
+  headers: { 'Content-Type': 'application/json' }
 })
 
 // request interceptor
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-    let token = getToken()
+    const token = getToken()
     if (token) {
       config.headers.common['Authorization'] = token
     }
@@ -51,7 +52,7 @@ service.interceptors.response.use(
     const rest = error.response
     console.error(rest) // for debug
     if (rest) {
-      if (rest.status === 400) {
+      if (rest.status === 400 || rest.status === 500) {
         Message({ message: rest.data.desc, type: 'error' })
       } else if (rest.status === 401) {
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {

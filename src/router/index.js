@@ -90,7 +90,7 @@ export const constantRoutes = [
         meta: { title: 'Proposal List', icon: 'form' }
       },
       {
-        path: 'proposal-detail',
+        path: 'proposal-detail/:proposalId',
         name: 'ProposalDetail',
         component: () => import('@/views/proposal/detail')
       }

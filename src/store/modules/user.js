@@ -1,7 +1,9 @@
 // import { login, logout, getInfo } from '@/api/user'
-import { getInfo } from '@/api/user'
+import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+// import { Encrypt } from '@/utils'
+import { Message } from 'element-ui'
 
 const getDefaultState = () => {
   return {
@@ -32,18 +34,23 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
-    commit('SET_TOKEN', username)
-    setToken(password)
-    // return new Promise((resolve, reject) => {
-    //   login({ username: username.trim(), password: password }).then(response => {
-    //     const { data } = response
-    //     commit('SET_TOKEN', data.token)
-    //     setToken(data.token)
-    //     resolve()
-    //   }).catch(error => {
-    //     reject(error)
-    //   })
-    // })
+    return new Promise((resolve, reject) => {
+      login({ userName: username.trim(), password }).then(response => {
+        console.log('response', response)
+
+        if (response.error !== 0) {
+          Message({ message: response.desc, type: 'error' })
+          reject(response.desc)
+        } else {
+          const { authorization } = response.result
+          commit('SET_TOKEN', authorization)
+          setToken(authorization)
+        }
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
   },
 
   // get user info
