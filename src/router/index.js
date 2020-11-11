@@ -110,9 +110,14 @@ export const constantRoutes = [
         meta: { title: 'Vote List', icon: 'form' }
       },
       {
-        path: 'vote-detail',
+        path: 'vote-detail/:voteId',
         name: 'VoteDetail',
         component: () => import('@/views/vote/detail')
+      },
+      {
+        path: 'vote-create',
+        name: 'VoteCreate',
+        component: () => import('@/views/vote/create')
       }
     ]
   },
