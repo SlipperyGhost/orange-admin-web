@@ -24,6 +24,7 @@
             <el-tag v-if="proposal.state === 0" type="info">审核中</el-tag>
             <el-tag v-if="proposal.state === 1" type="success">通过</el-tag>
             <el-tag v-if="proposal.state === 2" type="danger">拒绝</el-tag>
+            <el-tag v-if="proposal.state === 3" type="gray">取消</el-tag>
           </div>
         </li>
         <li>
@@ -42,7 +43,7 @@
         </li>
       </ul>
     </el-card>
-    <el-card v-if="!proposal.level || proposal.state === 2" class="el-card-css">
+    <el-card v-if="(!proposal.level || proposal.state === 2)&&proposal.state !== 3" class="el-card-css">
       <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-position="top" class="demo-ruleForm">
         <el-form-item label="等级" prop="level">
           <el-select v-model="ruleForm.level" placeholder="请设置等级">

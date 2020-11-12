@@ -46,6 +46,12 @@
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status | stateWord }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="Display" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.display" type="success">已发布</el-tag>
+          <el-tag v-else type="info">未发布</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="created_at" label="CreateTime" width="300">
         <template slot-scope="scope">
           <i v-if="scope.row.createTime" class="el-icon-time" style="margin-right: 4px" />

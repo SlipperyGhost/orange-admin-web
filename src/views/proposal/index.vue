@@ -73,13 +73,13 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = [
-        'gray', 'success', 'danger'
+        'gray', 'success', 'danger', 'info'
       ]
       return statusMap[status]
     },
     stateWord(status) {
       const statusMap = [
-        '待审核', '通过', '拒绝'
+        '待审核', '通过', '拒绝', '取消'
       ]
       return statusMap[status]
     },

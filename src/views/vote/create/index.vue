@@ -31,6 +31,12 @@
             value-format="timestamp"
           />
         </el-form-item>
+        <el-form-item label="是否立即发布" prop="display">
+          <el-select v-model="ruleForm.display" placeholder="请选择">
+            <el-option label="稍后发布" :value="false" />
+            <el-option label="立即发布" :value="true" />
+          </el-select>
+        </el-form-item>
         <el-card>
           换行需在换行处添加换行符号<br>
           <div style="margin-top: 10px">
@@ -65,7 +71,8 @@ export default {
         discussionLink: '',
         detail: '',
         time: null,
-        level: null
+        level: null,
+        display: false
       },
       rules: {
         title: [
@@ -76,6 +83,9 @@ export default {
         ],
         level: [
           { required: true, message: '请设置等级', trigger: 'change' }
+        ],
+        display: [
+          { required: true, message: '请选择是否立即发布', trigger: 'change' }
         ],
         time: [
           { type: 'array', required: true, message: '请设置时间', trigger: 'change' }

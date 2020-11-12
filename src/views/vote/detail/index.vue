@@ -53,6 +53,9 @@
       </el-card>
     </el-card>
     <el-card>
+      <div slot="header" class="clearfix">
+        <span>当前投票信息</span>
+      </div>
       <el-form ref="ruleForm" :model="ruleForm" label-position="top" :rules="rules" class="demo-ruleForm">
         <el-form-item label="主标题" prop="title">
           <el-input v-model="ruleForm.title" :disabled="isEdit" />
@@ -84,6 +87,12 @@
             :disabled="isEdit"
           />
         </el-form-item>
+        <el-form-item label="是否立即发布" prop="display">
+          <el-select v-model="ruleForm.display" :disabled="isEdit" placeholder="请选择">
+            <el-option label="稍后发布" :value="false" />
+            <el-option label="立即发布" :value="true" />
+          </el-select>
+        </el-form-item>
         <el-card>
           换行需在换行处添加换行符号<br>
           <div style="margin-top: 10px">
@@ -108,7 +117,7 @@
       :visible.sync="dialogVisible"
       width="30%"
     >
-      <el-timeline :reverse="true">
+      <el-timeline :reverse="false">
         <el-timeline-item
           v-for="(activity, index) in activities"
           :key="index"
@@ -125,7 +134,7 @@
 </template>
 
 <script>
-import { editVoteDetail, queryVoteDetail } from '@/api/vote'
+import { editVoteDetail, queryVoteDetail, editVoteStatus } from '@/api/vote'
 import { getUTCTime } from '@/utils'
 export default {
   filters: {
@@ -173,10 +182,14 @@ export default {
         discussionLink: '',
         detail: '',
         time: null,
-        level: null
+        level: null,
+        display: false
       },
       dialogVisible: false,
       rules: {
+        display: [
+          { required: true, message: '请选择是否立即发布', trigger: 'change' }
+        ],
         title: [
           { required: true, message: '请输入主标题', trigger: 'change' }
         ],
@@ -201,7 +214,7 @@ export default {
       const arr = []
       this.voteHistory.map(item => {
         const o = {}
-        o.content = this.stateWord(item.status)
+        o.content = this.stateWord2(item.status)
         o.timestamp = getUTCTime(item.createTime * 1000)
         arr.push(o)
       })
@@ -232,6 +245,12 @@ export default {
     stateWord(status) {
       const statusMap = [
         '失败', '通过且执行', '通过未执行', '进行中'
+      ]
+      return statusMap[status]
+    },
+    stateWord2(status) {
+      const statusMap = [
+        '', 'created', 'active', 'Succeeded', 'Queued', 'Executed', 'Failed'
       ]
       return statusMap[status]
     },
@@ -274,6 +293,35 @@ export default {
           message: `操作成功!`,
           type: 'success'
         })
+        this.isEdit = true
+        await this.queryVoteDetail()
+      } catch (e) {
+        this.btnLoading = false
+        this.$notify({
+          title: `Notification`,
+          message: `操作失败，请重试!`,
+          type: 'error'
+        })
+      }
+    },
+    async handlerEditStatus(params) {
+      try {
+        this.btnLoading = true
+        const result = await editVoteStatus({ ...params })
+        this.btnLoading = false
+        if (result.desc !== 'SUCCESS') {
+          this.$notify({
+            title: `Notification`,
+            message: `操作失败，请重试!`,
+            type: 'error'
+          })
+          return false
+        }
+        this.$notify({
+          title: `Notification`,
+          message: `操作成功!`,
+          type: 'success'
+        })
         await this.queryVoteDetail()
       } catch (e) {
         this.btnLoading = false
@@ -287,7 +335,7 @@ export default {
     async queryVoteDetail() {
       const result = await queryVoteDetail(this.$route.params.voteId)
       console.log(result)
-      const { title, wip, proposalBy, discussions, detail, startTime, endTime, level, status, voteHistory, optionResult, totalVotes } = result.result
+      const { title, wip, proposalBy, discussions, detail, startTime, display, endTime, level, status, voteHistory, optionResult, totalVotes } = result.result
       this.optionResult = optionResult
       this.totalVotes = totalVotes
       this.status = status
@@ -299,14 +347,15 @@ export default {
         discussionLink: discussions,
         detail,
         time: [startTime * 1000, endTime * 1000],
-        level
+        level,
+        display
       }
     },
     handlerChangeStatus() {
       if (this.changeStatus === null) {
         return false
       }
-      this.handlerMakeVote({ id: this.$route.params.voteId, status: this.changeStatus })
+      this.handlerEditStatus({ id: this.$route.params.voteId, status: this.changeStatus })
     }
   }
 }

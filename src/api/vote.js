@@ -25,7 +25,15 @@ export function queryVoteDetail(id) {
 
 export function editVoteDetail(data) {
   return request({
-    url: `/vote/edit`,
+    url: `/vote/edit-detail`,
+    method: 'POST',
+    data
+  })
+}
+
+export function editVoteStatus(data) {
+  return request({
+    url: `/vote/edit-status`,
     method: 'POST',
     data
   })
