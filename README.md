@@ -42,7 +42,9 @@ npm run lint
 # code format check and auto fix
 npm run lint -- --fix
 ```
+## env
 
+test url: http://172.168.3.245:32478/
 
 ## Browsers support
 
