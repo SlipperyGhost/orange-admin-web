@@ -43,21 +43,24 @@
         </li>
       </ul>
     </el-card>
-    <el-card v-if="(!proposal.level || proposal.state === 2)&&proposal.state !== 3" class="el-card-css">
-      <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-position="top" class="demo-ruleForm">
-        <el-form-item label="等级" prop="level">
-          <el-select v-model="ruleForm.level" placeholder="请设置等级">
-            <el-option label="等级一" :value="1" />
-            <el-option label="等级二" :value="2" />
-            <el-option label="等级三" :value="3" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">通过</el-button>
-          <el-button type="danger" @click="handlerAudit(0)">拒绝</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+    <div v-if="proposal.state !== 2 && proposal.state !== 3">
+      <el-card v-if="!proposal.level" class="el-card-css">
+        <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-position="top" class="demo-ruleForm">
+          <el-form-item label="等级" prop="level">
+            <el-select v-model="ruleForm.level" placeholder="请设置等级">
+              <el-option label="等级一" :value="1" />
+              <el-option label="等级二" :value="2" />
+              <el-option label="等级三" :value="3" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm')">通过</el-button>
+            <el-button type="danger" @click="handlerAudit(2)">拒绝</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </div>
+
     <el-card class="el-card-css"><ul>
       <li>
         <div class="label-title">修改备注</div>
