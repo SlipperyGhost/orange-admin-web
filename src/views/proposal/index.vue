@@ -25,7 +25,13 @@
       </el-table-column>
       <el-table-column label="Link">
         <template slot-scope="scope">
-          <a v-if="scope.row.discussionLink" target="_blank" style="color: dodgerblue;" :href="scope.row.discussionLink">{{ scope.row.discussionLink | subStringFn }}</a>
+          <a
+            v-if="scope.row.discussionLink"
+            target="_blank"
+            style="color: dodgerblue"
+            :href="scope.row.discussionLink"
+            >{{ scope.row.discussionLink | subStringFn }}</a
+          >
         </template>
       </el-table-column>
       <el-table-column label="Level">
@@ -33,22 +39,38 @@
           {{ scope.row.level }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
+      <el-table-column
+        class-name="status-col"
+        label="Status"
+        width="110"
+        align="center"
+      >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.state | statusFilter">{{ scope.row.state | stateWord }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="CreateTime" width="300">
-        <template slot-scope="scope">
-          <i v-if="scope.row.createTime" class="el-icon-time" style="margin-right: 4px" />
-          <span>{{ scope.row.createTime| getUTCTime }}</span>
+          <el-tag :type="scope.row.state | statusFilter">{{
+            scope.row.state | stateWord
+          }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        label="Operation"
+        align="center"
+        prop="created_at"
+        label="CreateTime"
+        width="300"
       >
         <template slot-scope="scope">
-          <el-button type="text" @click="handleClick(scope.row)">操作</el-button>
+          <i
+            v-if="scope.row.createTime"
+            class="el-icon-time"
+            style="margin-right: 4px"
+          />
+          <span>{{ (scope.row.createTime * 1000) | getUTCTime }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Operation">
+        <template slot-scope="scope">
+          <el-button type="text" @click="handleClick(scope.row)"
+            >操作</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -66,21 +88,16 @@
 </template>
 
 <script>
-
 import { getProposalList } from '@/api/proposal'
 import { getUTCTime } from '@/utils'
 export default {
   filters: {
     statusFilter(status) {
-      const statusMap = [
-        'gray', 'success', 'danger', 'info'
-      ]
+      const statusMap = ['gray', 'success', 'danger', 'info']
       return statusMap[status]
     },
     stateWord(status) {
-      const statusMap = [
-        '待审核', '通过', '拒绝', '取消'
-      ]
+      const statusMap = ['待审核', '通过', '拒绝', '取消']
       return statusMap[status]
     },
     subStringFn(str) {
@@ -116,15 +133,17 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      getProposalList({ pageNumber: this.pageNumber, pageSize: this.pageSize }).then(response => {
-        const { count, list } = response.result
-        this.list = list
-        this.total = count
-        this.listLoading = false
-        // eslint-disable-next-line handle-callback-err
-      }).catch(error => {
-        this.listLoading = false
-      })
+      getProposalList({ pageNumber: this.pageNumber, pageSize: this.pageSize })
+        .then(response => {
+          const { count, list } = response.result
+          this.list = list
+          this.total = count
+          this.listLoading = false
+          // eslint-disable-next-line handle-callback-err
+        })
+        .catch(error => {
+          this.listLoading = false
+        })
     }
   }
 }

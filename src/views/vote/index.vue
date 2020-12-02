@@ -1,12 +1,15 @@
 <template>
   <div class="app-container">
-    <div style="margin-bottom: 20px;">
+    <div style="margin-bottom: 20px">
       <el-button
         type="primary"
-        @click="$router.push({
-          name: 'VoteCreate'
-        })"
-      >创建投票</el-button>
+        @click="
+          $router.push({
+            name: 'VoteCreate',
+          })
+        "
+        >创建投票</el-button
+      >
     </div>
     <el-table
       v-loading="listLoading"
@@ -33,7 +36,13 @@
       </el-table-column>
       <el-table-column label="Link">
         <template slot-scope="scope">
-          <a v-if="scope.row.discussionLink" target="_blank" style="color: dodgerblue;" :href="scope.row.discussionLink">{{ scope.row.discussionLink | subStringFn }}</a>
+          <a
+            v-if="scope.row.discussionLink"
+            target="_blank"
+            style="color: dodgerblue"
+            :href="scope.row.discussionLink"
+            >{{ scope.row.discussionLink | subStringFn }}</a
+          >
         </template>
       </el-table-column>
       <el-table-column label="Level">
@@ -41,9 +50,16 @@
           {{ scope.row.level }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
+      <el-table-column
+        class-name="status-col"
+        label="Status"
+        width="110"
+        align="center"
+      >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status | stateWord }}</el-tag>
+          <el-tag :type="scope.row.status | statusFilter">{{
+            scope.row.status | stateWord
+          }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="Display" align="center">
@@ -52,17 +68,26 @@
           <el-tag v-else type="info">未发布</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="CreateTime" width="300">
-        <template slot-scope="scope">
-          <i v-if="scope.row.createTime" class="el-icon-time" style="margin-right: 4px" />
-          <span>{{ scope.row.createTime| getUTCTime }}</span>
-        </template>
-      </el-table-column>
       <el-table-column
-        label="Operation"
+        align="center"
+        prop="created_at"
+        label="CreateTime"
+        width="300"
       >
         <template slot-scope="scope">
-          <el-button type="text" @click="handleClick(scope.row)">操作</el-button>
+          <i
+            v-if="scope.row.createTime"
+            class="el-icon-time"
+            style="margin-right: 4px"
+          />
+          <span>{{ (scope.row.createTime * 1000) | getUTCTime }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Operation">
+        <template slot-scope="scope">
+          <el-button type="text" @click="handleClick(scope.row)"
+            >操作</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -80,21 +105,16 @@
 </template>
 
 <script>
-
 import { queryVoteList } from '@/api/vote'
 import { getUTCTime } from '@/utils'
 export default {
   filters: {
     statusFilter(status) {
-      const statusMap = [
-        'danger', 'success', 'warning', 'gray'
-      ]
+      const statusMap = ['danger', 'success', 'warning', 'gray']
       return statusMap[status]
     },
     stateWord(status) {
-      const statusMap = [
-        '失败', '通过且执行', '通过未执行', '进行中'
-      ]
+      const statusMap = ['失败', '通过且执行', '通过未执行', '进行中']
       return statusMap[status]
     },
     subStringFn(str) {
@@ -130,15 +150,17 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      queryVoteList({ pageNumber: this.pageNumber, pageSize: this.pageSize }).then(response => {
-        const { count, list } = response.result
-        this.list = list
-        this.total = count
-        this.listLoading = false
-        // eslint-disable-next-line handle-callback-err
-      }).catch(error => {
-        this.listLoading = false
-      })
+      queryVoteList({ pageNumber: this.pageNumber, pageSize: this.pageSize })
+        .then(response => {
+          const { count, list } = response.result
+          this.list = list
+          this.total = count
+          this.listLoading = false
+          // eslint-disable-next-line handle-callback-err
+        })
+        .catch(error => {
+          this.listLoading = false
+        })
     }
   }
 }
