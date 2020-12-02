@@ -191,5 +191,6 @@ textarea {
 .label-info {
   font-size: 14px;
   line-height: 20px;
+  word-break: break-all;
 }
 </style>
