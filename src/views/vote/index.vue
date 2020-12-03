@@ -80,7 +80,7 @@
             class="el-icon-time"
             style="margin-right: 4px"
           />
-          <span>{{ (scope.row.createTime * 1000) | getUTCTime }}</span>
+          <span>{{ (scope.row.createTime * 1000) | momnetTime }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Operation">
@@ -106,7 +106,7 @@
 
 <script>
 import { queryVoteList } from '@/api/vote'
-import { getUTCTime } from '@/utils'
+import { getUTCTime, momnetTime } from '@/utils'
 export default {
   filters: {
     statusFilter(status) {
@@ -125,6 +125,9 @@ export default {
     },
     getUTCTime(time) {
       return getUTCTime(time)
+    },
+    momnetTime(val) {
+      return momnetTime(val)
     }
   },
   data() {

@@ -1,6 +1,7 @@
 /**
  * Created by EricYang on 10/11/20.
  */
+import moment from 'moment';
 const CryptoJS = require('crypto-js') //
 
 const key = CryptoJS.enc.Utf8.parse('3019519629981742') //
@@ -218,4 +219,8 @@ export function getUTCTime(inputTime) {
       : date.getUTCSeconds()
 
   return mouth + D + Y + ' ' + h + ':' + m + ':' + s + ' UTC'
+}
+
+export function momnetTime(val) {
+  return moment(val).format('YYYY MM DD hh:mm:ss A')
 }
