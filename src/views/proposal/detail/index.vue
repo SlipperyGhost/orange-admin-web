@@ -29,7 +29,7 @@
         </li>
         <li>
           <div class="label-title">提交时间</div>
-          <div class="label-info">{{ getUTCTime(proposal.createTime) }}</div>
+          <div class="label-info">{{ getUTCTime(proposal.createTime*1000) }}</div>
         </li>
         <li>
           <div class="label-title">讨论地址</div>
