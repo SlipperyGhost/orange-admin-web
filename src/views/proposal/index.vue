@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column label="Title">
         <template slot-scope="scope">
-          {{ scope.row.title ｜ subStringFn }}
+          {{ scope.row.title| subStringFn }}
         </template>
       </el-table-column>
       <el-table-column label="Link">
