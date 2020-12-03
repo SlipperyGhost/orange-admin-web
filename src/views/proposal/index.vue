@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column label="Title">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.title ｜ subStringFn }}
         </template>
       </el-table-column>
       <el-table-column label="Link">
@@ -34,11 +34,11 @@
           >
         </template>
       </el-table-column>
-      <el-table-column label="Level">
+      <!-- <el-table-column label="Level">
         <template slot-scope="scope">
           {{ scope.row.level }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         class-name="status-col"
         label="Status"
