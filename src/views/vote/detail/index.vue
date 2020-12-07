@@ -84,7 +84,7 @@
             start-placeholder="开始时间"
             end-placeholder="结束时间"
             value-format="timestamp"
-            format="yyyy-MM-dd hh:ss A"
+            format="yyyy-MM-dd hh:mm:ss A"
             :disabled="isEdit"
           />
         </el-form-item>
