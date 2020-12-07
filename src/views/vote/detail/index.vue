@@ -380,4 +380,7 @@ export default {
 .card-css {
   margin-bottom: 20px;
 }
+.el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner {
+  width: 500px;
+}
 </style>

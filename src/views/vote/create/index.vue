@@ -155,3 +155,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner {
+  width: 500px;
+}
+</style>
