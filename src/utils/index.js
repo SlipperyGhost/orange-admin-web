@@ -222,5 +222,5 @@ export function getUTCTime(inputTime) {
 }
 
 export function momnetTime(val) {
-  return moment(val).format('YYYY MM DD hh:mm:ss A')
+  return moment(val).format('YYYY-MM-DD hh:mm:ss A')
 }
