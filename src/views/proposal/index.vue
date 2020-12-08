@@ -30,15 +30,14 @@
             target="_blank"
             style="color: dodgerblue"
             :href="scope.row.discussionLink"
-            >{{ scope.row.discussionLink | subStringFn }}</a
-          >
+          >{{ scope.row.discussionLink | subStringFn }}</a>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="Level">
+      <el-table-column label="Level">
         <template slot-scope="scope">
           {{ scope.row.level }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column
         class-name="status-col"
         label="Status"
@@ -68,9 +67,10 @@
       </el-table-column>
       <el-table-column label="Operation">
         <template slot-scope="scope">
-          <el-button type="text" @click="handleClick(scope.row)"
-            >操作</el-button
-          >
+          <el-button
+            type="text"
+            @click="handleClick(scope.row)"
+          >操作</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -141,6 +141,7 @@ export default {
           this.listLoading = false
           // eslint-disable-next-line handle-callback-err
         })
+        // eslint-disable-next-line handle-callback-err
         .catch(error => {
           this.listLoading = false
         })

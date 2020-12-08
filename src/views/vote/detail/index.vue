@@ -368,7 +368,7 @@ export default {
         if (result.desc !== 'SUCCESS') {
           this.$notify({
             title: `Notification`,
-            message: `操作失败，请重试!`,
+            message: result.desc,
             type: 'error'
           })
           return false
