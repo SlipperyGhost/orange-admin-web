@@ -6,20 +6,33 @@
       </div>
       <ul class="vote-amount">
         <li>
-          <div>总票数</div><div>{{ totalVotes }}</div>
+          <div>总票数</div>
+          <div>{{ totalVotes }}</div>
         </li>
         <li>
           <div>YES</div>
-          <p style="margin-bottom:6px"><span>{{ yesData.amount }}</span></p>
+          <p style="margin-bottom: 6px">
+            <span>{{ yesData.amount }}</span>
+          </p>
           <div>
-            <el-progress :percentage="yesData.percent | dataDliter" status="success" :show-text="false" />
+            <el-progress
+              :percentage="yesData.percent | dataDliter"
+              status="success"
+              :show-text="false"
+            />
           </div>
         </li>
         <li>
-          <div>NO </div>
-          <p style="margin-bottom:6px"><span>{{ noData.amount }}</span></p>
+          <div>NO</div>
+          <p style="margin-bottom: 6px">
+            <span>{{ noData.amount }}</span>
+          </p>
           <div>
-            <el-progress :percentage="noData.percent | dataDliter" status="exception" :show-text="false" />
+            <el-progress
+              :percentage="noData.percent | dataDliter"
+              status="exception"
+              :show-text="false"
+            />
           </div>
         </li>
       </ul>
@@ -28,12 +41,19 @@
           <li>
             <div>状态</div>
             <div>
-              <el-tag :type="status | statusFilter">{{ stateWord(status) }}</el-tag>
+              <el-tag :type="status | statusFilter">{{
+                stateWord(status)
+              }}</el-tag>
             </div>
           </li>
           <li>
             <div>
-              更改状态  <el-button type="info" size="small" @click="dialogVisible = true">状态纪录</el-button>
+              更改状态
+              <el-button
+                type="info"
+                size="small"
+                @click="dialogVisible = true"
+              >状态纪录</el-button>
             </div>
             <div>
               <el-select v-model="changeStatus" placeholder="请选择">
@@ -45,7 +65,10 @@
                 />
               </el-select>
               <p>
-                <el-button type="primary" @click="handlerChangeStatus()">修改</el-button>
+                <el-button
+                  type="primary"
+                  @click="handlerChangeStatus()"
+                >修改</el-button>
               </p>
             </div>
           </li>
@@ -56,7 +79,13 @@
       <div slot="header" class="clearfix">
         <span>当前投票信息</span>
       </div>
-      <el-form ref="ruleForm" :model="ruleForm" label-position="top" :rules="rules" class="demo-ruleForm">
+      <el-form
+        ref="ruleForm"
+        :model="ruleForm"
+        label-position="top"
+        :rules="rules"
+        class="demo-ruleForm"
+      >
         <el-form-item label="主标题" prop="title">
           <el-input v-model="ruleForm.title" :disabled="isEdit" />
         </el-form-item>
@@ -70,7 +99,11 @@
           <el-input v-model="ruleForm.discussionLink" :disabled="isEdit" />
         </el-form-item>
         <el-form-item label="等级" prop="level">
-          <el-select v-model="ruleForm.level" :disabled="isEdit" placeholder="请设置等级">
+          <el-select
+            v-model="ruleForm.level"
+            :disabled="isEdit"
+            placeholder="请设置等级"
+          >
             <el-option label="等级一" :value="1" />
             <el-option label="等级二" :value="2" />
             <el-option label="等级三" :value="3" />
@@ -89,7 +122,11 @@
           />
         </el-form-item>
         <el-form-item label="是否立即发布" prop="display">
-          <el-select v-model="ruleForm.display" :disabled="isEdit" placeholder="请选择">
+          <el-select
+            v-model="ruleForm.display"
+            :disabled="isEdit"
+            placeholder="请选择"
+          >
             <el-option label="稍后发布" :value="false" />
             <el-option label="立即发布" :value="true" />
           </el-select>
@@ -101,23 +138,29 @@
           </div>
         </el-card>
         <el-form-item label="详情" prop="detail">
-          <el-input v-model="ruleForm.detail" :disabled="isEdit" resize="none" :rows="10" type="textarea" />
+          <el-input
+            v-model="ruleForm.detail"
+            :disabled="isEdit"
+            resize="none"
+            :rows="10"
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item v-if="isEdit">
           <el-button type="primary" @click="isEdit = false">编辑</el-button>
         </el-form-item>
         <el-form-item v-else>
-          <el-button type="primary" :loading="btnLoading" @click="submitForm('ruleForm')">提交</el-button>
+          <el-button
+            type="primary"
+            :loading="btnLoading"
+            @click="submitForm('ruleForm')"
+          >提交</el-button>
           <el-button @click="cancelEdit()">取消</el-button>
         </el-form-item>
       </el-form>
     </el-card>
 
-    <el-dialog
-      title="状态纪录"
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
+    <el-dialog title="状态纪录" :visible.sync="dialogVisible" width="30%">
       <el-timeline :reverse="false">
         <el-timeline-item
           v-for="(activity, index) in activities"
@@ -140,9 +183,7 @@ import { getUTCTime } from '@/utils'
 export default {
   filters: {
     statusFilter(status) {
-      const statusMap = [
-        'danger', 'success', 'warning', 'gray'
-      ]
+      const statusMap = ['danger', 'success', 'warning', 'gray']
       return statusMap[status]
     },
     dataDliter(num) {
@@ -154,19 +195,24 @@ export default {
   },
   data() {
     return {
-      options: [{
-        value: 0,
-        label: '失败'
-      }, {
-        value: 1,
-        label: '通过且执行'
-      }, {
-        value: 2,
-        label: '通过未执行'
-      }, {
-        value: 3,
-        label: '进行中'
-      }],
+      options: [
+        {
+          value: 0,
+          label: '失败'
+        },
+        {
+          value: 1,
+          label: '通过且执行'
+        },
+        {
+          value: 2,
+          label: '通过未执行'
+        },
+        {
+          value: 3,
+          label: '进行中'
+        }
+      ],
       changeStatus: null,
       status: null,
       isEdit: true,
@@ -191,20 +237,24 @@ export default {
         display: [
           { required: true, message: '请选择是否立即发布', trigger: 'change' }
         ],
-        title: [
-          { required: true, message: '请输入主标题', trigger: 'change' }
-        ],
-        wip: [
-          { required: true, message: '请输入副标题', trigger: 'change' }
-        ],
-        level: [
-          { required: true, message: '请设置等级', trigger: 'change' }
-        ],
+        title: [{ required: true, message: '请输入主标题', trigger: 'change' }],
+        wip: [{ required: true, message: '请输入副标题', trigger: 'change' }],
+        level: [{ required: true, message: '请设置等级', trigger: 'change' }],
         time: [
-          { type: 'array', required: true, message: '请设置时间', trigger: 'change' }
+          {
+            type: 'array',
+            required: true,
+            message: '请设置时间',
+            trigger: 'change'
+          }
         ],
-        detail: [
-          { required: true, message: '请填写详情', trigger: 'change' }
+        detail: [{ required: true, message: '请填写详情', trigger: 'change' }],
+        discussionLink: [
+          {
+            pattern: /^((ht|f)tps?):\/\/([\w]+(\.[\w]+)*\/)*[\w]+(\.[\w]+)*\/?(\?([\w\-.,@?^=%&:/~+#]*)+)?/,
+            message: '请输入正确的链接',
+            trigger: 'change'
+          }
         ]
       },
       voteHistory: []
@@ -224,9 +274,7 @@ export default {
     createParams() {
       return {
         ...this.ruleForm,
-        options: [
-          'yes', 'no'
-        ],
+        options: ['yes', 'no'],
         startTime: this.ruleForm.time[0] / 1000,
         endTime: this.ruleForm.time[1] / 1000
       }
@@ -244,14 +292,18 @@ export default {
   },
   methods: {
     stateWord(status) {
-      const statusMap = [
-        '失败', '通过且执行', '通过未执行', '进行中'
-      ]
+      const statusMap = ['失败', '通过且执行', '通过未执行', '进行中']
       return statusMap[status]
     },
     stateWord2(status) {
       const statusMap = [
-        '', 'created', 'active', 'Succeeded', 'Queued', 'Executed', 'Failed'
+        '',
+        'created',
+        'active',
+        'Succeeded',
+        'Queued',
+        'Executed',
+        'Failed'
       ]
       return statusMap[status]
     },
@@ -263,9 +315,12 @@ export default {
       this.queryVoteDetail()
     },
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          this.handlerMakeVote({ id: this.$route.params.voteId, ...this.createParams })
+          this.handlerMakeVote({
+            id: this.$route.params.voteId,
+            ...this.createParams
+          })
         }
       })
     },
@@ -336,7 +391,21 @@ export default {
     async queryVoteDetail() {
       const result = await queryVoteDetail(this.$route.params.voteId)
       console.log(result)
-      const { title, wip, proposalBy, discussions, detail, startTime, display, endTime, level, status, voteHistory, optionResult, totalVotes } = result.result
+      const {
+        title,
+        wip,
+        proposalBy,
+        discussions,
+        detail,
+        startTime,
+        display,
+        endTime,
+        level,
+        status,
+        voteHistory,
+        optionResult,
+        totalVotes
+      } = result.result
       this.optionResult = optionResult
       this.totalVotes = totalVotes
       this.status = status
@@ -356,7 +425,10 @@ export default {
       if (this.changeStatus === null) {
         return false
       }
-      this.handlerEditStatus({ id: this.$route.params.voteId, status: this.changeStatus })
+      this.handlerEditStatus({
+        id: this.$route.params.voteId,
+        status: this.changeStatus
+      })
     }
   }
 }
@@ -371,7 +443,8 @@ export default {
       line-height: 24px;
       margin-bottom: 8px;
     }
-    div:nth-of-type(2),p {
+    div:nth-of-type(2),
+    p {
       font-size: 14px;
       line-height: 22px;
     }
@@ -380,7 +453,8 @@ export default {
 .card-css {
   margin-bottom: 20px;
 }
-.el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner {
+.el-date-editor--datetimerange.el-input,
+.el-date-editor--datetimerange.el-input__inner {
   width: 500px;
 }
 </style>

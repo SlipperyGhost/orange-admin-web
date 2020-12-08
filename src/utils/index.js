@@ -1,7 +1,7 @@
 /**
  * Created by EricYang on 10/11/20.
  */
-import moment from 'moment';
+import moment from 'moment'
 const CryptoJS = require('crypto-js') //
 
 const key = CryptoJS.enc.Utf8.parse('3019519629981742') //

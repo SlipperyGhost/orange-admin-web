@@ -1,7 +1,13 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form ref="ruleForm" :model="ruleForm" label-position="top" :rules="rules" class="demo-ruleForm">
+      <el-form
+        ref="ruleForm"
+        :model="ruleForm"
+        label-position="top"
+        :rules="rules"
+        class="demo-ruleForm"
+      >
         <el-form-item label="主标题" prop="title">
           <el-input v-model="ruleForm.title" />
         </el-form-item>
@@ -45,10 +51,19 @@
           </div>
         </el-card>
         <el-form-item label="详情" prop="detail">
-          <el-input v-model="ruleForm.detail" resize="none" :rows="10" type="textarea" />
+          <el-input
+            v-model="ruleForm.detail"
+            resize="none"
+            :rows="10"
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="btnLoading" @click="submitForm('ruleForm')">立即创建</el-button>
+          <el-button
+            type="primary"
+            :loading="btnLoading"
+            @click="submitForm('ruleForm')"
+          >立即创建</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -79,20 +94,26 @@ export default {
         title: [
           { required: true, message: '请输入活动名称', trigger: 'change' }
         ],
-        wip: [
-          { required: true, message: '请输入活动名称', trigger: 'change' }
-        ],
-        level: [
-          { required: true, message: '请设置等级', trigger: 'change' }
-        ],
+        wip: [{ required: true, message: '请输入活动名称', trigger: 'change' }],
+        level: [{ required: true, message: '请设置等级', trigger: 'change' }],
         display: [
           { required: true, message: '请选择是否立即发布', trigger: 'change' }
         ],
         time: [
-          { type: 'array', required: true, message: '请设置时间', trigger: 'change' }
+          {
+            type: 'array',
+            required: true,
+            message: '请设置时间',
+            trigger: 'change'
+          }
         ],
-        detail: [
-          { required: true, message: '请填写详情', trigger: 'change' }
+        detail: [{ required: true, message: '请填写详情', trigger: 'change' }],
+        discussionLink: [
+          {
+            pattern: /^((ht|f)tps?):\/\/([\w]+(\.[\w]+)*\/)*[\w]+(\.[\w]+)*\/?(\?([\w\-.,@?^=%&:/~+#]*)+)?/,
+            message: '请输入正确的链接',
+            trigger: 'change'
+          }
         ]
       }
     }
@@ -101,9 +122,7 @@ export default {
     createParams() {
       return {
         ...this.ruleForm,
-        options: [
-          'yes', 'no'
-        ],
+        options: ['yes', 'no'],
         startTime: this.ruleForm.time[0] / 1000,
         endTime: this.ruleForm.time[1] / 1000
       }
@@ -111,7 +130,7 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.handlerMakeVote()
         }
@@ -157,7 +176,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner {
+.el-date-editor--datetimerange.el-input,
+.el-date-editor--datetimerange.el-input__inner {
   width: 500px;
 }
 </style>
