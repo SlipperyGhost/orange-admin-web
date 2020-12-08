@@ -17,7 +17,7 @@
         <el-form-item label="Proposal 提供者地址（选填）">
           <el-input v-model="ruleForm.proposalBy" />
         </el-form-item>
-        <el-form-item label="discussionLink（选填）">
+        <el-form-item label="discussionLink（选填）" prop="discussionLink">
           <el-input v-model="ruleForm.discussionLink" />
         </el-form-item>
         <el-form-item label="等级" prop="level">
