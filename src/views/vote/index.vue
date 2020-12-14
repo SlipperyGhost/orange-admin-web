@@ -8,8 +8,7 @@
             name: 'VoteCreate',
           })
         "
-        >创建投票</el-button
-      >
+      >创建投票</el-button>
     </div>
     <el-table
       v-loading="listLoading"
@@ -21,7 +20,8 @@
     >
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          <span>{{ (pageNumber - 1) * pageSize + scope.$index + 1 }}</span>
+          <!--          <span>{{ (pageNumber - 1) * pageSize + scope.$index + 1 }}</span>-->
+          <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Proposal Address">
@@ -41,8 +41,7 @@
             target="_blank"
             style="color: dodgerblue"
             :href="scope.row.discussionLink"
-            >{{ scope.row.discussionLink | subStringFn }}</a
-          >
+          >{{ scope.row.discussionLink | subStringFn }}</a>
         </template>
       </el-table-column>
       <el-table-column label="Level">
@@ -72,7 +71,7 @@
         align="center"
         prop="created_at"
         label="CreateTime"
-        width="300"
+        width="220"
       >
         <template slot-scope="scope">
           <i
@@ -85,9 +84,10 @@
       </el-table-column>
       <el-table-column label="Operation">
         <template slot-scope="scope">
-          <el-button type="text" @click="handleClick(scope.row)"
-            >操作</el-button
-          >
+          <el-button
+            type="text"
+            @click="handleClick(scope.row)"
+          >操作</el-button>
         </template>
       </el-table-column>
     </el-table>
