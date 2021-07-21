@@ -40,8 +40,6 @@ export function editVoteStatus(data) {
 }
 
 export function editVoteStatusTime(data) {
-  console.log('editVoteStatusTime');
-  console.log(data);
   return request({
     url: `/vote/edit-status?executeTime=${data.executeTime}`,
     method: 'POST',
