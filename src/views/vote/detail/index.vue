@@ -40,11 +40,16 @@
         <ul class="vote-amount">
           <li>
             <div>状态</div>
-            <div>
+            <span>
               <el-tag :type="status | statusFilter">{{
                 stateWord(status)
               }}</el-tag>
-            </div>
+            </span>
+            <span style="margin-left: 5px;">
+              <el-tag v-if="voteHistory[voteHistory.length - 1].status === 5" type="info">{{
+                new Date(execTimeWord() * 1000)
+              }}</el-tag>
+            </span>
           </li>
           <li>
             <div>
@@ -64,6 +69,14 @@
                   :value="item.value"
                 />
               </el-select>
+              <el-date-picker
+                v-if="changeStatus==1"
+                v-model="changeExecuteTime"
+                type="datetime"
+                :picker-options="pickerOptions"
+                placeholder="Select date and time"
+                style="margin-left: 10px;"
+              />
               <p>
                 <el-button
                   type="primary"
@@ -178,7 +191,7 @@
 </template>
 
 <script>
-import { editVoteDetail, queryVoteDetail, editVoteStatus } from '@/api/vote'
+import { editVoteDetail, queryVoteDetail, editVoteStatus, editVoteStatusTime } from '@/api/vote'
 import { getUTCTime } from '@/utils'
 export default {
   filters: {
@@ -213,6 +226,10 @@ export default {
           label: '进行中'
         }
       ],
+      pickerOptions: {
+        disabledDate: this.disabledDate,
+      },
+      changeExecuteTime: null,
       changeStatus: null,
       status: null,
       isEdit: true,
@@ -291,6 +308,12 @@ export default {
     console.log()
   },
   methods: {
+    disabledDate(date) {
+      if (date > Date.now()) {
+        return true;
+      }
+      return false;
+    },
     stateWord(status) {
       const statusMap = ['失败', '通过且执行', '通过未执行', '进行中']
       return statusMap[status]
@@ -306,6 +329,11 @@ export default {
         'Failed'
       ]
       return statusMap[status]
+    },
+    execTimeWord() {
+      if (this.voteHistory[this.voteHistory.length - 1].status === 5) {
+        return this.voteHistory[this.voteHistory.length - 1].createTime;
+      }
     },
     handleClose() {
       this.dialogVisible = false
@@ -363,8 +391,14 @@ export default {
     async handlerEditStatus(params) {
       try {
         this.btnLoading = true
-        const result = await editVoteStatus({ ...params })
+        let result = null
         this.btnLoading = false
+        console.log(params)
+        if (params.status === 1) {
+          result = await editVoteStatusTime({ ...params })
+        } else {
+          result = await editVoteStatus({ ...params })
+        }
         if (result.desc !== 'SUCCESS') {
           this.$notify({
             title: `Notification`,
@@ -422,12 +456,13 @@ export default {
       }
     },
     handlerChangeStatus() {
-      if (this.changeStatus === null) {
+      if (this.changeStatus === null || this.changeStatus === 1 && this.changeExecuteTime === null) {
         return false
       }
       this.handlerEditStatus({
         id: this.$route.params.voteId,
-        status: this.changeStatus
+        status: this.changeStatus,
+        executeTime: Math.floor(this.changeExecuteTime / 1000)
       })
     }
   }

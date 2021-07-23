@@ -38,3 +38,11 @@ export function editVoteStatus(data) {
     data
   })
 }
+
+export function editVoteStatusTime(data) {
+  return request({
+    url: `/vote/edit-status?executeTime=${data.executeTime}`,
+    method: 'POST',
+    data
+  })
+}
