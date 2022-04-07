@@ -63,3 +63,13 @@ div:focus {
 .app-container {
   padding: 20px;
 }
+.card-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 20px;
+}
+.button-group {
+  text-align: center;
+  margin-top: 20px;
+}

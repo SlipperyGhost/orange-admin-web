@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Wing Admin',
+  title: 'Orange Admin',
 
   /**
    * @type {boolean} true | false

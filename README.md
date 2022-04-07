@@ -1,4 +1,4 @@
-# wing-admin-web
+# orange-admin-frontend
 
 ## Build Setup
 
@@ -7,7 +7,7 @@
 https://git.ont.io/yangshaowei/wing-admin-web.git
 
 # enter the project directory
-cd wing-admin-web
+cd orange-admin-frontend
 
 # install dependency
 npm install

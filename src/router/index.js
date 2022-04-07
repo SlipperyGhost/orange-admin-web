@@ -77,47 +77,94 @@ export const constantRoutes = [
   // },
 
   {
-    path: '/proposal',
+    path: '/ap-dp',
     component: Layout,
-    redirect: '/proposal/proposal-index',
-    name: 'Proposal',
-    meta: { title: 'Proposal', icon: 'el-icon-s-help' },
+    redirect: '/ap-dp/ap-index',
+    name: 'APDP',
+    meta: { title: 'AP/DP', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'proposal-index',
-        name: 'ProposalIndex',
-        component: () => import('@/views/proposal'),
-        meta: { title: 'Proposal List', icon: 'form' }
+        path: 'ap-index',
+        name: 'APIndex',
+        component: () => import('@/views/ap'),
+        meta: { title: 'AP List', icon: 'form' }
       },
       {
-        path: 'proposal-detail/:proposalId',
-        name: 'ProposalDetail',
-        component: () => import('@/views/proposal/detail')
+        path: 'ap-detail/:id',
+        hidden: true,
+        name: 'ApDetail',
+        component: () => import('@/views/ap/apDetail'),
+        meta: { title: 'AP Detail', icon: 'form' }
+      },
+      {
+        path: 'model-detail/:id',
+        hidden: true,
+        name: 'APModelDetail',
+        component: () => import('@/views/ap/modelDetail'),
+        meta: { title: 'AP Model Detail', icon: 'form' }
+      },
+      {
+        path: 'dp-index',
+        name: 'DPIndex',
+        component: () => import('@/views/dp'),
+        meta: { title: 'DP List', icon: 'nested' }
+      },
+      {
+        path: 'dp-detail/:proposalId',
+        name: 'DpDetail',
+        hidden: true,
+        component: () => import('@/views/proposal/detail'),
+        meta: { title: 'DP Detail', icon: 'form' }
       }
     ]
   },
   {
-    path: '/vote',
+    path: '/label',
     component: Layout,
-    redirect: '/vote/vote-index',
-    name: 'Vote',
-    meta: { title: 'Vote', icon: 'table' },
+    redirect: '/label/ap-label-index',
+    name: 'Label',
+    meta: { title: 'Label', icon: 'table' },
     children: [
       {
-        path: 'vote-index',
-        name: 'VoteIndex',
-        component: () => import('@/views/vote'),
-        meta: { title: 'Vote List', icon: 'form' }
+        path: 'ap-label-index',
+        name: 'APLabelIndex',
+        component: () => import('@/views/lables'),
+        meta: { title: 'AP Label List', icon: 'form' }
       },
       {
-        path: 'vote-detail/:voteId',
-        name: 'VoteDetail',
-        component: () => import('@/views/vote/detail')
+        path: 'ap-label-detail/:label',
+        name: 'APLabelDetail',
+        hidden: true,
+        component: () => import('@/views/lables/labelDetail'),
+        meta: { title: 'Label Detail', icon: 'form' }
       },
       {
-        path: 'vote-create',
-        name: 'VoteCreate',
-        component: () => import('@/views/vote/create')
+        path: 'dp-label-index',
+        name: 'DPLabelIndex',
+        component: () => import('@/views/lables/dpIndex.vue'),
+        meta: { title: 'DP Label List', icon: 'form' }
+      },
+      {
+        path: 'dp-label-detail/:label',
+        name: 'DPLabelDetail',
+        hidden: true,
+        component: () => import('@/views/lables/dpLabelDetail'),
+        meta: { title: 'Label Detail', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/data-source',
+    component: Layout,
+    redirect: '/data-source/data-source-index',
+    name: 'DataSource',
+    meta: { title: 'Data Source', icon: 'table' },
+    children: [
+      {
+        path: 'data-source-index',
+        name: 'DataSourceIndex',
+        component: () => import('@/views/dataSource'),
+        meta: { title: 'Data Source List', icon: 'form' }
       }
     ]
   },
