@@ -97,7 +97,7 @@ export const constantRoutes = [
         meta: { title: 'AP Detail', icon: 'form' }
       },
       {
-        path: 'model-detail/:id',
+        path: 'model-detail/:did/:method',
         hidden: true,
         name: 'APModelDetail',
         component: () => import('@/views/ap/modelDetail'),

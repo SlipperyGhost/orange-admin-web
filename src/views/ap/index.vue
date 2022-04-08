@@ -2,7 +2,8 @@
   <div class="app-container">
     <div class="card-list">
       <el-card v-for="(item, idx) in list" :key="idx">
-        <h3>{{ item }}</h3>
+        <img :src="item.icon" alt="">
+        <h3>{{ item.title }}</h3>
         <div class="button-group">
           <el-button type="text" @click="handleClick(item)">查看详情</el-button>
         </div>
@@ -22,7 +23,8 @@
 </template>
 
 <script>
-import { getProposalList } from '@/api/proposal'
+// import { getProposalList } from '@/api/proposal'
+import { getAllAProviders } from '@/api/providers'
 export default {
   data() {
     return {
@@ -34,31 +36,26 @@ export default {
     }
   },
   created() {
-    // this.fetchData()
+    this.fetchData()
   },
   methods: {
     handleClick(data) {
-      this.$router.push({ path: 'ap-detail/' + data })
+      this.$router.push({ path: 'ap-detail/' + data.did })
       return data
     },
     handleCurrentChange(val) {
       this.pageNumber = val
       this.fetchData()
     },
-    fetchData() {
+    async fetchData() {
       this.listLoading = true
-      getProposalList({ pageNumber: this.pageNumber, pageSize: this.pageSize })
-        .then((response) => {
-          const { count, list } = response.result
-          this.list = list
-          this.total = count
-          this.listLoading = false
-          // eslint-disable-next-line handle-callback-err
-        })
-        // eslint-disable-next-line handle-callback-err
-        .catch((error) => {
-          this.listLoading = false
-        })
+      const result = await getAllAProviders({
+        pageSize: this.pageSize,
+        pageNumber: this.pageNumber
+      })
+      this.listLoading = false
+      this.list = result.data.getAllAlgorithmProviders.data
+      this.total = result.data.getAllAlgorithmProviders.total
     }
   }
 }
@@ -68,6 +65,18 @@ export default {
 .pagination-lay {
   margin-top: 20px;
   text-align: right;
+}
+h3 {
+  text-align: center;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+img {
+  display: block;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
 }
 .card-list {
   display: grid;

@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form :model="form" label-position="top">
+      <el-form label-position="top">
         <el-form-item label="Model Name" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off" />
+          <el-input v-model="info.title" autocomplete="off" />
         </el-form-item>
         <el-form-item label="Model Description" :label-width="formLabelWidth">
-          <el-input v-model="form.description" type="textarea" autocomplete="off" />
+          <el-input v-model="info.description" :rows="10" type="textarea" autocomplete="off" />
         </el-form-item>
         <el-form-item label="Blockchain" :label-width="formLabelWidth">
           <div class="flex-label">
@@ -51,34 +51,46 @@
 
 <script>
 import LabelSelect from '@/components/LabelSelect'
+import { getAlgorithmProviderMethod } from '@/api/providers'
+import { getAPLabelList } from '@/api/label'
 
 export default {
   name: 'APModelDetailIndex',
   components: { LabelSelect },
   data() {
     return {
-      list: [1, 2, 3, 4, 5],
-      listLoading: true,
-      pageNumber: 1,
-      pageSize: 10,
-      total: 0,
+      did: '',
+      info: {},
+      methodName: '',
       dialogFormVisible: false,
-      form: {
-        icon: '111',
-        name: '222',
-        description: '333'
-      },
       labelValue: ['Avalanche'],
       formLabelWidth: '120px',
-      allOptionsValue: ['Avalanche', 'BSC', 'Polygon', 'Ontology'],
-      blockChainValue: ['Avalanche', 'BSC'],
-      categoryValue: ['Avalanche'],
-      scenarioValue: ['BSC', 'Polygon'],
+      // allOptionsValue: ['Avalanche', 'BSC', 'Polygon', 'Ontology'],
+      blockChainValue: [],
+      categoryValue: [],
+      scenarioValue: [],
       selectOption: [],
-      typeName: ''
+      typeName: '',
+      labels: {
+        blockChain: [],
+        category: [],
+        scenario: []
+      }
     }
   },
   computed: {
+    allOptionsValue() {
+      if (this.typeName === 'Blockchain') {
+        return this.labels.blockChain
+      }
+      if (this.typeName === 'Category') {
+        return this.labels.category
+      }
+      if (this.typeName === 'Scenario') {
+        return this.labels.scenario
+      }
+      return []
+    },
     allOptions() {
       return this.allOptionsValue.map(item => {
         return {
@@ -112,12 +124,25 @@ export default {
       })
     }
   },
+  mounted() {
+    this.did = this.$route.params.did
+    this.methodName = this.$route.params.method
+    this.handlerGetDetail()
+    this.getLabel()
+  },
   methods: {
-    handleClick() {},
-    handleCurrentChange(val) {
-      this.pageNumber = val
-      // this.fetchData()
+    async handlerGetDetail() {
+      const result = await getAlgorithmProviderMethod({
+        did: this.did,
+        name: this.methodName
+      })
+      console.log('detail', result)
+      this.info = result.data.getAlgorithmProviderMethod
+      this.blockChainValue = this.info.labels.blockChain
+      this.categoryValue = this.info.labels.category
+      this.scenarioValue = this.info.labels.scenario
     },
+    handleClick() {},
     handlerUpdate(val) {
       this.selectOption = val
     },
@@ -141,6 +166,11 @@ export default {
         this.scenarioValue = this.selectOption
       }
       this.dialogFormVisible = false
+    },
+    async getLabel() {
+      const result = await getAPLabelList()
+      console.log('label result', result)
+      this.labels = result.data.queryAPLabels
     }
   }
 }

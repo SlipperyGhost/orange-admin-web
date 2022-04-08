@@ -7,10 +7,10 @@
           添加
         </el-button>
       </div>
-      <el-card>
+      <el-card v-loading="loading">
         <div class="card-list">
-          <el-button type="success" round plain @click="handlerEdit('BlockChain')">主要按钮</el-button>
-          <el-button type="success" round plain>主要按钮</el-button>
+          <el-button v-for="item in list" :key="item" type="success" round plain @click="handlerEdit(item)">
+            {{ item }}</el-button>
         </div>
       </el-card>
     </el-card>
@@ -25,24 +25,40 @@
   </div>
 </template>
 <script>
+import { getAPLabelList } from '@/api/label'
+
 export default {
   data() {
     return {
       isAdd: false,
       currentItem: '',
       dialogFormVisible: false,
-      type: ''
+      type: '',
+      loading: false,
+      list: []
     }
   },
   computed: {
     dialogTitle() {
       return this.isAdd ? '添加' : '修改'
     }
+
   },
   mounted() {
     this.type = this.$route.params.label
+    this.handlerGetAPLabelList()
   },
   methods: {
+    async handlerGetAPLabelList() {
+      this.loading = true
+      const result = await getAPLabelList()
+      this.loading = false
+      if (this.type === 'Blockchain') {
+        this.list = result.data.queryAPLabels['blockChain']
+      } else {
+        this.list = result.data.queryAPLabels[this.type.toLowerCase()]
+      }
+    },
     handlerEdit(item) {
       this.isAdd = false
       this.currentItem = item

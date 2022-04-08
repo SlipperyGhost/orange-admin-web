@@ -9,13 +9,13 @@
       </div>
       <el-card>
         <div class="card-list">
-          <el-card v-for="item in list" :key="item">
+          <el-card v-for="(item, idx) in list" :key="idx">
             <div class="source-item">
               <div class="info">
-                <img src="" alt="">
-                <h3>Data Source Title</h3>
+                <img :src="item.Icon" alt="">
+                <h3>{{ item.Name }}</h3>
               </div>
-              <el-button type="text" @click="handlerEdit('BlockChain')">主要按钮</el-button>
+              <el-button type="text" @click="handlerEdit(item)">编辑</el-button>
             </div>
           </el-card>
         </div>
@@ -25,10 +25,10 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form label-position="top">
         <el-form-item label="Icon">
-          <el-input v-model="icon" autocomplete="off" />
+          <el-input v-model="selectItem.Icon" autocomplete="off" />
         </el-form-item>
         <el-form-item label="Item Name">
-          <el-input v-model="currentItem" autocomplete="off" />
+          <el-input v-model="selectItem.Name" autocomplete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -39,6 +39,9 @@
   </div>
 </template>
 <script>
+
+import { queryDPDataSource } from '@/api/dataSource'
+
 export default {
   data() {
     return {
@@ -46,8 +49,11 @@ export default {
       currentItem: '',
       dialogFormVisible: false,
       type: '',
-      icon: '',
-      list: [1, 2, 3, 4, 5, 6, 7, 8]
+      list: [],
+      selectItem: {
+        Icon: '',
+        Name: ''
+      }
     }
   },
   computed: {
@@ -57,16 +63,24 @@ export default {
   },
   mounted() {
     this.type = this.$route.params.label
+    this.getList()
   },
   methods: {
+    async getList() {
+      const { data } = await queryDPDataSource()
+      this.list = data.queryDPDataSource.dataSource
+    },
     handlerEdit(item) {
       this.isAdd = false
-      this.currentItem = item
+      this.selectItem = item
       this.dialogFormVisible = true
     },
     handlerAdd() {
       this.isAdd = true
-      this.currentItem = ''
+      this.selectItem = {
+        Icon: '',
+        Name: ''
+      }
       this.dialogFormVisible = true
     },
     handlerAciton() {
@@ -101,7 +115,6 @@ export default {
       display: block;
       width: 60px;
       height: 60px;
-      background: #cccccc;
       margin: 0 auto 8px;
     }
   }
