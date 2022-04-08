@@ -110,12 +110,19 @@ export const constantRoutes = [
         meta: { title: 'DP List', icon: 'nested' }
       },
       {
-        path: 'dp-detail/:proposalId',
+        path: 'dp-detail/:id',
         name: 'DpDetail',
         hidden: true,
-        component: () => import('@/views/proposal/detail'),
+        component: () => import('@/views/dp/dpDetail'),
         meta: { title: 'DP Detail', icon: 'form' }
-      }
+      },
+      {
+        path: 'dateset-detail/:did/:method',
+        hidden: true,
+        name: 'DPDatesetDetail',
+        component: () => import('@/views/dp/modelDetail'),
+        meta: { title: 'DP Dateset Detail', icon: 'form' }
+      },
     ]
   },
   {

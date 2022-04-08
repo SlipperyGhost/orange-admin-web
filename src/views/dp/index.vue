@@ -1,79 +1,14 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
-      <el-table-column align="center" label="ID" width="95">
-        <template slot-scope="scope">
-          <span>{{ (pageNumber - 1) * pageSize + scope.$index + 1 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Address">
-        <template slot-scope="scope">
-          {{ scope.row.address }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title| subStringFn }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Link">
-        <template slot-scope="scope">
-          <a
-            v-if="scope.row.discussionLink"
-            target="_blank"
-            style="color: dodgerblue"
-            :href="scope.row.discussionLink"
-          >{{ scope.row.discussionLink | subStringFn }}</a>
-        </template>
-      </el-table-column>
-      <el-table-column label="Level">
-        <template slot-scope="scope">
-          {{ scope.row.level }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        class-name="status-col"
-        label="Status"
-        width="110"
-        align="center"
-      >
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.state | statusFilter">{{
-            scope.row.state | stateWord
-          }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="created_at"
-        label="CreateTime"
-        width="300"
-      >
-        <template slot-scope="scope">
-          <i
-            v-if="scope.row.createTime"
-            class="el-icon-time"
-            style="margin-right: 4px"
-          />
-          <span>{{ (scope.row.createTime * 1000) | getUTCTime }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Operation">
-        <template slot-scope="scope">
-          <el-button
-            type="text"
-            @click="handleClick(scope.row)"
-          >操作</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="card-list">
+      <el-card v-for="(item, idx) in list" :key="idx">
+        <img :src="item.icon" alt="">
+        <h3>{{ item.title }}</h3>
+        <div class="button-group">
+          <el-button type="text" @click="handleClick(item)">查看详情</el-button>
+        </div>
+      </el-card>
+    </div>
     <div class="pagination-lay">
       <el-pagination
         background
@@ -88,31 +23,11 @@
 </template>
 
 <script>
-import { getProposalList } from '@/api/proposal'
-import { getUTCTime } from '@/utils'
+import { getAllDataProviders } from '@/api/providers'
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = ['gray', 'success', 'danger', 'info']
-      return statusMap[status]
-    },
-    stateWord(status) {
-      const statusMap = ['待审核', '通过', '拒绝', '取消']
-      return statusMap[status]
-    },
-    subStringFn(str) {
-      if (str.length < 20) {
-        return str
-      }
-      return str.substring(0, 20) + '......'
-    },
-    getUTCTime(time) {
-      return getUTCTime(time)
-    }
-  },
   data() {
     return {
-      list: null,
+      list: [],
       listLoading: true,
       pageNumber: 1,
       pageSize: 10,
@@ -124,27 +39,22 @@ export default {
   },
   methods: {
     handleClick(data) {
-      this.$router.push({ path: 'proposal-detail/' + data.id })
+      this.$router.push({ path: 'dp-detail/' + data.did })
       return data
     },
     handleCurrentChange(val) {
       this.pageNumber = val
       this.fetchData()
     },
-    fetchData() {
+    async fetchData() {
       this.listLoading = true
-      getProposalList({ pageNumber: this.pageNumber, pageSize: this.pageSize })
-        .then(response => {
-          const { count, list } = response.result
-          this.list = list
-          this.total = count
-          this.listLoading = false
-          // eslint-disable-next-line handle-callback-err
-        })
-        // eslint-disable-next-line handle-callback-err
-        .catch(error => {
-          this.listLoading = false
-        })
+      const result = await getAllDataProviders({
+        pageSize: this.pageSize,
+        pageNumber: this.pageNumber
+      })
+      this.listLoading = false
+      this.list = result.data.getAllDataProviders.data
+      this.total = result.data.getAllDataProviders.total
     }
   }
 }
@@ -154,5 +64,27 @@ export default {
 .pagination-lay {
   margin-top: 20px;
   text-align: right;
+}
+h3 {
+  text-align: center;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+img {
+  display: block;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+}
+.card-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 20px;
+}
+.button-group {
+    text-align: center;
+    margin-top: 20px;
 }
 </style>
