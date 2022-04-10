@@ -32,6 +32,14 @@
             <el-button type="primary" @click="handlerOpenDialog('Scenario')">更新</el-button>
           </div>
         </el-form-item>
+        <el-form-item label="Data Source" :label-width="formLabelWidth">
+          <div class="flex-label">
+            <div class="img-box">
+              <img v-for="(item, idx) in dataSourceImg" :key="idx" :src="item.icon" alt="">
+            </div>
+            <el-button type="primary" @click="handlerOpenDialog('DataSource')">更新</el-button>
+          </div>
+        </el-form-item>
       </el-form>
       <div class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -40,7 +48,7 @@
     </el-card>
 
     <el-dialog title="Edit" :visible.sync="dialogFormVisible">
-      <LabelSelect :model-value="selectOption" :options="allOptions" :type-name="typeName" :limit="3" :show-count="true" @update:modelValue="handlerUpdate" />
+      <LabelSelect :model-value="selectOption" :options="allOptions" :type-name="typeName" :show-count="false" @update:modelValue="handlerUpdate" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="handlerEditOption">确 定</el-button>
@@ -53,6 +61,7 @@
 import LabelSelect from '@/components/LabelSelect'
 import { getDataProviderMethod } from '@/api/providers'
 import { getDPLabelList } from '@/api/label'
+import { queryDPDataSource } from '@/api/dataSource'
 
 export default {
   name: 'APModelDetailIndex',
@@ -67,13 +76,15 @@ export default {
       blockChainValue: [],
       categoryValue: [],
       scenarioValue: [],
+      dataSourceValue: [],
       selectOption: [],
       typeName: '',
       labels: {
         blockChain: [],
         category: [],
         scenario: []
-      }
+      },
+      dataSource: []
     }
   },
   computed: {
@@ -90,7 +101,18 @@ export default {
       return []
     },
     allOptions() {
+      if (this.typeName === 'DataSource') {
+        return this.dataSource
+      }
       return this.allOptionsValue.map(item => {
+        return {
+          value: item,
+          label: item
+        }
+      })
+    },
+    dataSourceOptions() {
+      return this.dataSourceValue.map(item => {
         return {
           value: item,
           label: item
@@ -120,6 +142,17 @@ export default {
           label: item
         }
       })
+    },
+    dataSourceImg() {
+      const resultValue = []
+      this.dataSourceValue.map((item) => {
+        this.dataSource.map((ele) => {
+          if (ele.value === item) {
+            resultValue.push(ele)
+          }
+        })
+      })
+      return resultValue
     }
   },
   mounted() {
@@ -127,6 +160,7 @@ export default {
     this.methodName = this.$route.params.method
     this.handlerGetDetail()
     this.getLabel()
+    this.queryDPDataSource()
   },
   methods: {
     async handlerGetDetail() {
@@ -139,6 +173,7 @@ export default {
       this.blockChainValue = this.info.labels.blockChain
       this.categoryValue = this.info.labels.category
       this.scenarioValue = this.info.labels.scenario
+      this.dataSourceValue = this.info.DataSource
     },
     handleClick() {},
     handlerUpdate(val) {
@@ -151,6 +186,8 @@ export default {
         this.selectOption = this.categoryValue
       } else if (type === 'Scenario') {
         this.selectOption = this.scenarioValue
+      } else if (type === 'DataSource') {
+        this.selectOption = this.dataSourceValue
       }
       this.typeName = type
       this.dialogFormVisible = true
@@ -162,6 +199,8 @@ export default {
         this.categoryValue = this.selectOption
       } else if (this.typeName === 'Scenario') {
         this.scenarioValue = this.selectOption
+      } else if (this.typeName === 'DataSource') {
+        this.dataSourceValue = this.selectOption
       }
       this.dialogFormVisible = false
     },
@@ -169,6 +208,15 @@ export default {
       const result = await getDPLabelList()
       console.log('label result', result)
       this.labels = result.data.queryDPLabels
+    },
+    async queryDPDataSource() {
+      const { data } = await queryDPDataSource()
+      const list = data.queryDPDataSource.dataSource
+      this.dataSource = list.map((item) => ({
+        icon: item.Icon,
+        label: item.Name,
+        value: item.Name
+      }))
     }
   }
 }
@@ -200,5 +248,15 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+.img-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr  1fr 1fr 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 20px;
+  img {
+    width: 40px;
+    height: 40px;
+  }
 }
 </style>

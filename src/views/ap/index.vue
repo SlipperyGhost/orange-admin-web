@@ -23,15 +23,15 @@
 </template>
 
 <script>
-// import { getProposalList } from '@/api/proposal'
+
 import { getAllAProviders } from '@/api/providers'
 export default {
   data() {
     return {
-      list: [1, 2, 3, 4, 5],
+      list: [],
       listLoading: true,
       pageNumber: 1,
-      pageSize: 10,
+      pageSize: 12,
       total: 0
     }
   },

@@ -4,7 +4,7 @@
 
 ```bash
 # clone the project
-https://git.ont.io/yangshaowei/wing-admin-web.git
+git@github.com:SlipperyGhost/orange-admin-web.git
 
 # enter the project directory
 cd orange-admin-frontend

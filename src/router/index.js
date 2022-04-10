@@ -87,7 +87,7 @@ export const constantRoutes = [
         path: 'ap-index',
         name: 'APIndex',
         component: () => import('@/views/ap'),
-        meta: { title: 'AP List', icon: 'form' }
+        meta: { title: 'AP List', icon: 'el-icon-mouse' }
       },
       {
         path: 'ap-detail/:id',
@@ -122,7 +122,7 @@ export const constantRoutes = [
         name: 'DPDatesetDetail',
         component: () => import('@/views/dp/modelDetail'),
         meta: { title: 'DP Dateset Detail', icon: 'form' }
-      },
+      }
     ]
   },
   {
@@ -130,20 +130,20 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/label/ap-label-index',
     name: 'Label',
-    meta: { title: 'Label', icon: 'table' },
+    meta: { title: 'Label', icon: 'el-icon-paperclip' },
     children: [
       {
         path: 'ap-label-index',
         name: 'APLabelIndex',
         component: () => import('@/views/lables'),
-        meta: { title: 'AP Label List', icon: 'form' }
+        meta: { title: 'AP Label List', icon: 'el-icon-s-data' }
       },
       {
         path: 'ap-label-detail/:label',
         name: 'APLabelDetail',
         hidden: true,
         component: () => import('@/views/lables/labelDetail'),
-        meta: { title: 'Label Detail', icon: 'form' }
+        meta: { title: 'Label Detail', icon: 'el-icon-s-flag' }
       },
       {
         path: 'dp-label-index',
@@ -165,13 +165,42 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/data-source/data-source-index',
     name: 'DataSource',
-    meta: { title: 'Data Source', icon: 'table' },
+    meta: { title: 'Data Source', icon: 'el-icon-s-marketing' },
     children: [
       {
         path: 'data-source-index',
         name: 'DataSourceIndex',
         component: () => import('@/views/dataSource'),
-        meta: { title: 'Data Source List', icon: 'form' }
+        meta: { title: 'Data Source List', icon: 'el-icon-s-marketing' }
+      }
+    ]
+  },
+  {
+    path: '/review',
+    component: Layout,
+    redirect: '/review/review-index',
+    name: 'Review',
+    meta: { title: 'Review', icon: 'eleme' },
+    children: [
+      {
+        path: 'review-index',
+        name: 'ReviewIndex',
+        component: () => import('@/views/review'),
+        meta: { title: 'Review List', icon: 'el-icon-eleme' }
+      },
+      {
+        path: 'review-ap-list',
+        name: 'ReviewAPList',
+        hidden: true,
+        component: () => import('@/views/review/ap'),
+        meta: { title: 'Review AP List', icon: 'form' }
+      },
+      {
+        path: 'review-ap-detail/:id',
+        name: 'ReviewAPDetail',
+        hidden: true,
+        component: () => import('@/views/review/ap/detail'),
+        meta: { title: 'Review AP Detail', icon: 'form' }
       }
     ]
   },

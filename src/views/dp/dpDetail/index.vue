@@ -16,7 +16,7 @@
       </div>
       <el-card>
         <div class="model">
-          <h3>Model</h3>
+          <h3>Datasets</h3>
           <div class="card-list">
             <el-card v-for="(item, idx) in list" :key="idx">
               <img :src="item.icon" alt="">
